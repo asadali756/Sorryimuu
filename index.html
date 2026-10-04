@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2a0f33">
+<title>Imama, I'm Sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#2a0f33;--wine:#5c1e4d;--rose:#b84a73;--gold:#f6cf87;--cream:#fff3e8;--blush:#ffd6e3}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Quicksand',Arial,sans-serif;color:var(--cream);background:linear-gradient(165deg,var(--plum),var(--wine) 55%,#9b3d68);overflow-x:hidden;min-height:100vh;min-height:100dvh}
+.app{max-width:480px;margin:auto;position:relative;min-height:100vh;min-height:100dvh}
+.script{font-family:'Great Vibes',cursive;font-weight:400;color:var(--gold);line-height:1.15}
+h1.script{font-size:52px;margin-bottom:14px}
+h2.script{font-size:42px;margin-bottom:12px}
+p{font-size:16px;line-height:1.75}
+.screen{display:none;min-height:100vh;min-height:100dvh;padding:80px 24px 60px;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.screen.active{display:flex;animation:in .8s ease}
+#screen1.active{animation:none}
+html{overflow-x:hidden;overscroll-behavior-x:none}
+html,body{max-width:100%}
+body{touch-action:pan-y}
+.app{overflow-x:hidden;overflow-x:clip}
+html{-webkit-text-size-adjust:100%}
+button{-webkit-appearance:none;appearance:none}
+.script.love{font-size:42px;margin-top:26px;line-height:1.3;background:linear-gradient(90deg,#f6cf87,#ffd6e3,#f6cf87);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite,lovein 1.6s ease both}
+@keyframes shine{to{background-position:200% 0}}
+@keyframes lovein{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes in{from{opacity:0;transform:scale(.96) translateY(20px)}to{opacity:1;transform:none}}
+
+/* buttons */
+.btn{border:none;margin-top:24px;padding:15px 36px;border-radius:50px;background:linear-gradient(135deg,var(--gold),#f0a9b8);color:#4a1238;font:700 17px 'Quicksand',sans-serif;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.3);transition:transform .2s;animation:glow 2.4s infinite}
+.btn:active{transform:scale(.94)}
+.btn.ghost{background:transparent;color:var(--cream);border:1.5px solid rgba(255,243,232,.5);box-shadow:none;animation:none}
+@keyframes glow{50%{box-shadow:0 10px 36px rgba(246,207,135,.55)}}
+.back{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:14px;z-index:3000;display:none;padding:9px 16px;border-radius:30px;border:1px solid rgba(246,207,135,.5);background:rgba(42,15,51,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--gold);font:600 14px 'Quicksand',sans-serif;cursor:pointer}
+.back.on{display:block}
+
+/* screen 1: flower border */
+#screen1{padding:80px 58px 80px}
+#screen1::before{content:"";position:absolute;top:24px;right:24px;bottom:24px;left:24px;border:1.5px solid rgba(246,207,135,.55);border-radius:6px;pointer-events:none}
+#screen1::after{content:"";position:absolute;top:32px;right:32px;bottom:32px;left:32px;border:1px dashed rgba(246,207,135,.25);border-radius:4px;pointer-events:none}
+.fl{position:absolute;width:44px;height:44px;object-fit:contain;pointer-events:none;opacity:0;animation:bloom .9s ease-out var(--d) forwards;will-change:transform,opacity}
+@keyframes bloom{from{opacity:0;transform:scale(.1) rotate(calc(var(--r) - 120deg))}to{opacity:1;transform:scale(1) rotate(var(--r))}}
+@keyframes sway{0%,100%{transform:rotate(var(--r)) scale(1)}50%{transform:rotate(calc(var(--r) + 10deg)) scale(1.12)}}
+.card{background:rgba(255,243,232,.09);border:1px solid rgba(246,207,135,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:24px;padding:24px 20px;margin-top:6px;box-shadow:0 14px 34px rgba(0,0,0,.25)}
+.card p+p{margin-top:12px}
+.gold{color:var(--gold);font-weight:600}
+
+/* screen 2: countdown */
+.ring{position:relative;width:210px;height:210px;margin:26px 0}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7}
+.ring .bg{stroke:rgba(255,243,232,.15)}
+.ring .fg{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;filter:drop-shadow(0 0 8px rgba(246,207,135,.7))}
+.num{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;font:400 96px 'Great Vibes',cursive;color:var(--cream)}
+.num.pop{animation:pop .9s ease}
+@keyframes pop{0%{transform:scale(1.7);opacity:0}30%{opacity:1}100%{transform:scale(1)}}
+.halo{position:absolute;top:-14px;right:-14px;bottom:-14px;left:-14px;border-radius:50%;border:1px solid rgba(246,207,135,.4);animation:halo 2s infinite}
+@keyframes halo{from{transform:scale(.9);opacity:1}to{transform:scale(1.25);opacity:0}}
+#cdLine{min-height:56px;max-width:300px}
+
+/* screen 3: sorry */
+.sorry-area{position:relative;width:88%;height:340px;margin:10px 0}
+.sorry-area img{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:contain;border-radius:26px;border:2px solid rgba(246,207,135,.6);background:rgba(0,0,0,.2);opacity:0;transform:scale(.9) rotate(-2deg);transition:all .9s ease}
+.sorry-area img.show{opacity:1;transform:none}
+
+/* screen 4: letter */
+.env{width:285px;height:195px;position:relative;margin:34px auto 10px;cursor:pointer;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.env.open{animation:none}
+.env .box{position:absolute;top:0;right:0;bottom:0;left:0;background:#e59ab4;border-radius:8px;box-shadow:0 18px 35px rgba(0,0,0,.35)}
+.env .box::before{content:"";position:absolute;left:0;top:0;border-left:142px solid transparent;border-right:142px solid transparent;border-top:105px solid #c9708f;transform-origin:top;transition:.8s;z-index:3}
+.env .paper{position:absolute;width:90%;height:150px;left:5%;bottom:8px;background:var(--cream);border-radius:6px;z-index:2;transition:.8s;display:flex;align-items:center;justify-content:center;font-size:44px}
+.env.open .box::before{transform:rotateX(180deg);z-index:1}
+.env.open .paper{transform:translateY(-70px)}
+.seal{position:absolute;left:50%;top:84px;transform:translateX(-50%);z-index:4;font-size:30px;transition:.4s}
+.env.open .seal{opacity:0}
+.hint{font-size:14px;color:var(--blush)}
+.letter{display:none;width:100%;margin-top:28px;text-align:left;background:var(--cream);color:#5a2a40;border-radius:6px;padding:26px 22px;box-shadow:0 18px 40px rgba(0,0,0,.35);background-image:repeating-linear-gradient(transparent 0 31px,rgba(184,74,115,.15) 31px 32px)}
+.letter.show{display:block}
+.letter .script{color:#b84a73;font-size:38px}
+.letter p{font-size:15.5px;line-height:32px;opacity:0;animation:line .9s ease forwards;animation-delay:var(--d)}
+@keyframes line{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* screen 5: gallery */
+#screen5{justify-content:flex-start}
+.grid{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;margin-top:20px}
+.pol{position:relative;background:var(--cream);padding:7px 7px 24px;border-radius:6px;box-shadow:0 12px 26px rgba(0,0,0,.35);opacity:0;transform:translateY(60px) rotate(0);transition:opacity .8s,transform .8s}
+.pol:nth-child(odd){--t:-2.5deg}.pol:nth-child(even){--t:2.5deg;margin-top:18px}
+.pol.show{opacity:1;transform:rotate(var(--t))}
+.pol img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;border-radius:3px;background:#e9c9d6}
+.pol::before{content:"";position:absolute;top:-9px;left:50%;width:46px;height:16px;transform:translateX(-50%) rotate(-3deg);background:rgba(246,207,135,.75);border-radius:2px}
+.pol .em{position:absolute;right:-8px;bottom:-12px;font-size:26px;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px) scale(1.1)}}
+
+/* floating things */
+.fmsg{position:fixed;bottom:-60px;z-index:999;padding:9px 18px;border-radius:50px;background:rgba(255,243,232,.95);color:#8a3560;font:700 14px 'Quicksand',sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 8px 25px rgba(0,0,0,.25);animation:fm 5s ease-in-out forwards}
+@keyframes fm{0%{opacity:0;transform:translate(-50%,0) scale(.8)}12%{opacity:1;transform:translate(-50%,-40px) scale(1)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-90vh) scale(.9)}}
+.fh{position:fixed;bottom:-40px;font-size:22px;pointer-events:none;z-index:1000;animation:hu 4s linear forwards}
+@keyframes hu{to{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
+.petal{position:fixed;top:-30px;pointer-events:none;z-index:0;opacity:.5;animation:pd linear forwards}
+@keyframes pd{to{transform:translate(0,110vh) rotate(300deg)}}
+.app>.screen{z-index:1}
+
+/* final */
+.bigheart{font-size:80px;animation:hb 1.3s infinite}
+@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.choices{display:flex;flex-direction:column;align-items:center;width:100%}
+#noMsg{min-height:60px;margin-top:16px;color:var(--blush);font-size:15px}
+
+.dots{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2000}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,243,232,.3);transition:.3s}
+.dot.on{width:22px;border-radius:10px;background:var(--gold)}
+@media(max-width:360px){h1.script{font-size:44px}.sorry-area{height:290px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<button class="back" id="back" onclick="goBack()">← Back</button>
+<div class="app">
+
+<!-- 1 -->
+<section class="screen active" id="screen1">
+  <h1 class="script">Imama, I'm Sorry</h1>
+  <div class="card">
+    <p>Imama, I am sorry for my behaviour. Maine us waqt bas ghusse mein kaha tha. Kyun kaha, mujhe khud nahi pata, bas ghussa aa gaya tha.</p>
+    <p>Sorry Imama. Mujhe bas yehi kehna tha.</p>
+    <p class="gold">Mujhe maaf kar dena Imama. Sorry kehna kafi nahi hai, dil se accept kar ke maaf kar dein aur achay se baat kar lena. Next time ke liye main khayal karunga. ❤️</p>
+  </div>
+  <button class="btn" onclick="goTo(2)">Let's Gooo ✨</button>
+</section>
+
+<!-- 2 -->
+<section class="screen" id="screen2">
+  <h2 class="script">Bas ek minute...</h2>
+  <p>Koi argument nahi, koi bahana nahi.<br>Bas meri baat sun lena.</p>
+  <div class="ring">
+    <div class="halo"></div>
+    <svg viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="fg" cx="80" cy="80" r="70"/></svg>
+    <div class="num" id="num">10</div>
+  </div>
+  <p id="cdLine"></p>
+</section>
+
+<!-- 3 -->
+<section class="screen" id="screen3">
+  <h2 class="script">I'm Sorry, Imama</h2>
+  <p>Ye sirf lafz nahi, dil se kaha hua sorry hai. 🥺</p>
+  <div class="sorry-area"><img src="sorry1.gif" alt=""><img src="sorry2.gif" alt=""><img src="sorry3.gif" alt=""></div>
+  <audio id="song" src="song.mp4" preload="auto" loop playsinline webkit-playsinline></audio>
+  <button class="btn" onclick="goTo(4)">Meri baat sunogi? 💌</button>
+</section>
+
+<!-- 4 -->
+<section class="screen" id="screen4">
+  <h2 class="script">Ek Letter, Sirf Aapke Liye</h2>
+  <p class="hint">Envelope ko tap karein 💌</p>
+  <div class="env" id="env" onclick="openEnv()"><div class="box"><div class="paper">💖</div></div><div class="seal">❤️</div></div>
+  <div class="letter" id="letter">
+    <p class="script" style="--d:.1s;line-height:40px">Dear Meri Jannn ❤️</p>
+    <p style="--d:.9s">Aap roya nahi karein, please. Mujhe bohot bura lagta hai.</p>
+    <p style="--d:1.9s">Aapko pehli baar aise dekha to mujhe apne aap par hi ghussa aa raha tha.</p>
+    <p style="--d:3s">Aap mujhe maaf kar dein. Main aapko rulana nahi chahta tha, wo sab unnecessary ho gaya tha.</p>
+    <p style="--d:4.3s">Wo saare words, wo saara ghussa, sab ko please ignore kar dein.</p>
+    <p style="--d:5.5s">Aapki aankhon mein aansu nahi, hamesha muskurahat achi lagti hai. 🌸</p>
+    <p class="script" style="--d:6.7s;line-height:40px;text-align:right">Always yours ❤️</p>
+  </div>
+  <button class="btn" onclick="goTo(5)">Continue ❤️</button>
+</section>
+
+<!-- 5 -->
+<section class="screen" id="screen5">
+  <h2 class="script">Our Little World</h2>
+  <p>Kuch lamhe, kuch yaadein, aur bohot saara pyaar. 💕</p>
+  <div class="grid" id="grid"></div>
+  <button class="btn" onclick="goTo(6)" style="margin-top:36px">One Last Thing ❤️</button>
+</section>
+
+<!-- 6 -->
+<section class="screen" id="screen6">
+  <div class="bigheart">❤️</div>
+  <h2 class="script">Imama...</h2>
+  <div class="card">
+    <p>Mujhe aap se ek cheez chahiye.</p>
+    <p class="gold" style="font-size:19px">Kya aap mujhe maaf kar dengi?</p>
+    <p>Main ye promise nahi karta ke kabhi ghalti nahi karunga, lekin ye zaroor karta hoon ke aapki feelings ko kabhi halka nahi lunga.</p>
+    <p class="gold">Aapki smile mere liye bohot zaroori hai. ❤️</p>
+  </div>
+  <div class="choices">
+    <button class="btn" onclick="forgive()">Yes ❤️</button>
+    <button class="btn ghost" onclick="notYet()">Abhi thori naraz hoon 😤</button>
+  </div>
+  <p id="noMsg"></p>
+</section>
+
+<!-- 7 -->
+<section class="screen" id="screen7">
+  <div class="bigheart">💖</div>
+  <h1 class="script">Thank You, Imama</h1>
+  <div class="card">
+    <p>Mujhe maaf karne ka bohot shukriya.</p>
+    <p>Ab sirf sorry nahi bolunga, apne actions se bhi sabit karunga.</p>
+    <p class="gold">Aapki smile hamesha meri priority hai. ❤️</p>
+  </div>
+  <h2 class="script love">I Loveee You<br>Soooo Muchhh<br>Imama Asad ki Jaaan</h2>
+  <h2 class="script love" style="margin-top:14px;animation-delay:0s,1.4s">Aur Hamesha<br>Asad ki Rehna<br>My Loveeee</h2>
+  <div class="bigheart" style="font-size:56px;margin-top:10px">❤️</div>
+</section>
+
+<div class="dots" id="dots"></div>
+</div>
+
+<script>
+var cur=1,hist=[1],cdT,soT,msT,sIdx=0;
+var $=function(i){return document.getElementById(i)};
+var dots=$('dots');for(var i=1;i<=7;i++){dots.innerHTML+='<div class="dot'+(i==1?' on':'')+'"></div>'}
+
+function goTo(n,isBack){
+  clearInterval(cdT);clearInterval(soT);clearInterval(msT);
+  $('screen'+cur).classList.remove('active');
+  cur=n;$('screen'+n).classList.add('active');
+  if(!isBack)hist.push(n);
+  $('back').classList.toggle('on',n>1);
+  document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('on',i==n-1)});
+  window.scrollTo(0,0);
+  if(n==2){unlockSong();startCount()}
+  if(n==3)startSorry();
+  if(n==5){msT=setInterval(floatMsg,900);watchCards()}
+  if(n==7){burst(25);msT=setInterval(function(){burst(4)},1200)}
+}
+function goBack(){
+  hist.pop();var p=hist[hist.length-1];
+  if(p==2){hist.pop();p=hist[hist.length-1]}
+  goTo(p||1,true);
+}
+
+/* flower garland around the full border of screen 1 */
+var lastW=0,lastH=0;
+function buildFrame(){
+  var sec=$('screen1'),W=sec.offsetWidth,H=sec.offsetHeight;
+  if(!W||!H)return;
+  if(W==lastW&&Math.abs(H-lastH)<60)return;
+  lastW=W;lastH=H;
+  sec.querySelectorAll('.fl').forEach(function(x){x.remove()});
+  var s=44,c=24,w=W-2*c,h=H-2*c,P=2*(w+h),n=Math.round(P/(s*.9)),st=P/n;
+  for(var i=0;i<n;i++){
+    var d=i*st,x,y,r;
+    if(d<w){x=c+d;y=c;r=0}
+    else if(d<w+h){x=c+w;y=c+d-w;r=90}
+    else if(d<2*w+h){x=c+w-(d-w-h);y=c+h;r=180}
+    else{x=c;y=c+h-(d-2*w-h);r=270}
+    var im=document.createElement('img');
+    im.src='flower'+(i%3+1)+'.png';im.className='fl';im.alt='';
+    im.style.left=(x-s/2)+'px';im.style.top=(y-s/2)+'px';
+    im.style.setProperty('--r',r+'deg');
+    im.style.setProperty('--d',(i*.07)+'s');
+    sec.appendChild(im);
+  }
+}
+buildFrame();
+window.addEventListener('load',buildFrame);
+window.addEventListener('resize',buildFrame);
+
+/* song */
+function unlockSong(){
+  var s=$('song');s.muted=true;
+  var p=s.play();
+  if(p&&p.then)p.then(function(){s.pause();s.currentTime=0;s.muted=false}).catch(function(){s.muted=false});
+}
+function playSong(){var s=$('song');s.muted=false;s.volume=.9;var p=s.play();if(p&&p.catch)p.catch(function(){})}
+
+/* countdown */
+var lines=["Saans lein...","Bas thori si der...","Main yahin hoon.","Aap meri sab se khaas ho.","Dil se keh raha hoon.","Aadha rasta tay ho gaya.","Ghussa thanda hone dein.","Bas thora aur...","Ab muskura dein ✨","Ready? ❤️"];
+function startCount(){
+  var n=10,fg=$('fg'),num=$('num');
+  function show(){
+    num.textContent=n;num.classList.remove('pop');void num.offsetWidth;num.classList.add('pop');
+    fg.style.strokeDashoffset=440*(1-n/10);
+    $('cdLine').textContent=lines[10-n];
+  }
+  fg.style.transition='none';fg.style.strokeDashoffset=0;void fg.getBoundingClientRect();fg.style.transition='';
+  show();
+  cdT=setInterval(function(){
+    n--;
+    if(n>0){show();burst(2)}
+    else{clearInterval(cdT);num.textContent='❤️';fg.style.strokeDashoffset=440;burst(14);playSong();setTimeout(function(){goTo(3)},1100)}
+  },1000);
+}
+
+/* sorry images */
+function startSorry(){
+  var a=document.querySelectorAll('.sorry-area img');sIdx=0;
+  a.forEach(function(x,i){x.classList.toggle('show',i==0)});
+  soT=setInterval(function(){a[sIdx].classList.remove('show');sIdx=(sIdx+1)%a.length;a[sIdx].classList.add('show')},3500);
+}
+
+/* letter */
+function openEnv(){
+  var e=$('env');if(e.classList.contains('open'))return;
+  e.classList.add('open');burst(10);
+  setTimeout(function(){var l=$('letter');l.classList.add('show');l.scrollIntoView({behavior:'smooth',block:'center'})},900);
+}
+
+/* gallery */
+var em=["💕","🌸","✨","🧸","💌","🌷","🥰","💖","🎀","💫","🌹","💞"],g=$('grid');
+for(var i=1;i<=12;i++){g.innerHTML+='<div class="pol"><img src="couple'+i+'.jpg" alt=""><span class="em">'+em[i-1]+'</span></div>'}
+function watchCards(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('show');io.unobserve(x.target)}})},{threshold:.15});
+  document.querySelectorAll('.pol').forEach(function(c){io.observe(c)});
+}
+
+/* floating messages */
+var msgs=["❤️ I Love You Imama","🥺 Sorry Imama","💕 Ye lafz sirf aapke liye","❤️ Meri Imama","🌸 Please Smile","💗 You Mean So Much To Me","🥺 Naraz mat rahein","💕 Aap bohot special ho","🌷 Aapki smile bohot pyari hai","💖 Hamesha aapka khayal","🥰 My Favourite Person","❤️ Sorry For Hurting You","💕 Ab bas smile kar dein","🌸 You Are Precious","❤️ Meri Khushi"];
+function floatMsg(){
+  var m=document.createElement('div');m.className='fmsg';
+  m.textContent=msgs[Math.floor(Math.random()*msgs.length)];
+  m.style.left=(25+Math.random()*50)+'%';
+  var d=4+Math.random()*2;m.style.animationDuration=d+'s';
+  document.body.appendChild(m);setTimeout(function(){m.remove()},d*1000);
+}
+
+/* hearts + petals */
+function burst(n){
+  var h=["❤️","💗","💕","💖","🌸","✨"];
+  for(var i=0;i<n;i++)(function(i){setTimeout(function(){
+    var e=document.createElement('div');e.className='fh';
+    e.textContent=h[Math.floor(Math.random()*h.length)];
+    e.style.left=Math.random()*88+'vw';e.style.animationDuration=3+Math.random()*2+'s';
+    document.body.appendChild(e);setTimeout(function(){e.remove()},5000);
+  },i*100)})(i);
+}
+setInterval(function(){
+  var p=document.createElement('div');p.className='petal';p.textContent='🌸';
+  p.style.left=Math.random()*88+'vw';p.style.fontSize=(10+Math.random()*10)+'px';
+  var d=9+Math.random()*6;p.style.animationDuration=d+'s';
+  document.body.appendChild(p);setTimeout(function(){p.remove()},d*1000);
+},1800);
+
+function forgive(){burst(35);setTimeout(function(){goTo(7)},1200)}
+function notYet(){
+  $('noMsg').innerHTML="Theek hai... 😔❤️<br>Main wait karunga. Bas itna yaad rakhna, aap mere liye bohot important ho.";
+  burst(15);
+}
+</script>
+</body>
+</html>
